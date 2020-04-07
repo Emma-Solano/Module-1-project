@@ -1,0 +1,33 @@
+body{
+    background-color: black;
+}
+
+.mainScreen{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mainScreen h1{
+    font-size: 100px;
+    color: #23de6e;
+    font-family: 'Press Start 2P', cursive;
+}
+
+#start-button{
+font-size: 40px;
+font-family: 'Press Start 2P', cursive;
+  background-color: royalblue;
+  color: white;
+  padding: 10px 20px;
+  border: 0;
+  box-shadow: 0;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+#my-canvas{
+    background-image: url(Images/background.jpg);
+}
