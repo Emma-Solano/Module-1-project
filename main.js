@@ -10,8 +10,9 @@ let images = {
 
 let startedGame
 let gameTime = 0
-let currentWave = 1
+let currentWave = 2
 let firedLasers = []
+let enemiesArray =[]
 
 //clases
 
@@ -60,35 +61,33 @@ class Laser {
 }
 
 class enemy {
-    constructor(virusXPosition, randomSpeed){
+    constructor(virusXPosition, random){
+        this.randomSpeed = random
         this.virusXPosition = virusXPosition
         this.virusYPosition = 20
-        this.virusHeight = 120
-        this.virusWidth = 120
+        this.virusHeight = 100
+        this.virusWidth = 100
         this.virus = new Image()
         this.virus.src = images.virus
         this.virus.onload = ()=>{
             this.virusDraw()
         }
     }
-    virusDraw(randomSpeed){
-        this.virusYPosition = this.virusYposition + randomSpeed
+    virusDraw(){
+        this.virusYPosition += this.randomSpeed
         ctx.drawImage(this.virus, this.virusXPosition, this.virusYPosition,this.virusWidth, this.virusHeight )
+    }
+}
+
+class Plasma {
+    constructor(){
+        
     }
 }
 
 //instancias
 
 let phage1 = new Player()
-let virus1 = new enemy(60, .5)
-let virus2 = new enemy(200, .7)
-let virus3 = new enemy(340, .4)
-let virus4 = new enemy(480, .1)
-let virus5 = new enemy(620, .6)
-let virus6 = new enemy(760, .9)
-let virus7 = new enemy(920, .3)
-let virus8 = new enemy(1060, .6)
-let virus9 = new enemy(1220, .5)
 
 //main functions
 function startGame() { 
@@ -100,39 +99,46 @@ function refresh(){
     ctx.clearRect(0, 0, 1400 ,800)
     gameTime++
     phage1.phageDraw()
-    virus1.virusDraw()
-    virus2.virusDraw()
-    virus3.virusDraw()
-    virus4.virusDraw()
-    virus5.virusDraw()
-    virus6.virusDraw()
-    virus7.virusDraw()
-    virus8.virusDraw()
-    virus9.virusDraw()
-    drawLasers()
+    drawEnemies()
+    drawLasers ()
+    generateEnemies()
 }
 
 function generateEnemies(){
     if(currentWave === 1){
-        maxSpeedVirus = .3
-        minSpeedVirus= .2
-    }else if (currentWave === 2){
-        maxSpeedVirus = .5
+        maxSpeedVirus = .4
         minSpeedVirus= .3
-    }else if (currentWave === 3){
-        maxSpeedVirus = .7
+        gameSpeed = 400
+    }else if (currentWave === 2){
+        maxSpeedVirus = .6
         minSpeedVirus= .4
-    }else if (currentWave === 4){
-        maxSpeedVirus = .9
+        gameSpeed = 350
+    }else if (currentWave === 3){
+        maxSpeedVirus = .8
         minSpeedVirus= .5
+        gameSpeed = 300
+    }else if (currentWave === 4){
+        maxSpeedVirus = 1
+        minSpeedVirus= .6
+        gameSpeed = 250
     }else if (currentWave === 5){
         maxSpeedVirus = 1.1
-        minSpeedVirus= .6
+        minSpeedVirus= .7
+        gameSpeed = 200
     }
-    let randomSpeed = Math.random() * (maxSpeedVirus - minSpeedVirus) + minSpeed
+    if (gameTime % gameSpeed === 0){
+        let randomSpeed = Math.random() * (maxSpeedVirus - minSpeedVirus) + minSpeedVirus
+        let randomPosition = Math.random() * (1300 - 100) + 100
+        enemiesArray.push(new enemy(randomPosition, randomSpeed))
+        console.log(gameTime)
+    }
+    }
+    
+    function drawEnemies(){
+        enemiesArray.forEach((enemy)=> enemy.virusDraw())
+    }
 
 
-}
 //auxiliar functions
 
 function laserFire (){
@@ -148,6 +154,7 @@ function drawLasers (){
 window.onload = function() {
     document.getElementById("start-button").onclick = function() {
       startGame()
+      generateEnemies()
     }};
 
     document.addEventListener('keydown', ({keyCode} ) => {
@@ -159,13 +166,10 @@ window.onload = function() {
             phage1.phageMoveRigth()
             break;
         }
-        }
-    );
+        });
 
      document.addEventListener('keyup', ({keyCode} ) => {
          if (keyCode === 32){
                 laserFire()
         }
-        }
-    );
-    
+        });
