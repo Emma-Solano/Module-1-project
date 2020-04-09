@@ -10,12 +10,17 @@ let images = {
 
 let startedGame
 let gameTime = 0
-let currentWave = 4
+let currentWave = 1
 let firedLasers = []
 let enemiesArray =[]
 let firedPlasma = []
 let randomVirusFire
 let trespasedVirus = 0
+let killedEnemies = 0
+let enemiesLeft = 20
+let clearedLevel = false
+
+
  
 
 //clases
@@ -114,7 +119,7 @@ class Plasma {
        }
     }
     plasmaDraw(){
-        this.plasmaYPosition += 8
+        this.plasmaYPosition += 9
         ctx.drawImage(this.plasma, this.plasmaXPosition,  this.plasmaYPosition, this.plasmaWidth, this.plasmaHeight)
     }
 }
@@ -143,29 +148,33 @@ function refresh(){
     lasersAttack()
     plasmaAttack()
     gameOver()
-
+    winGame()
+    levelUp()
+    let text3 = document.getElementById("life").innerText = `${phage1.playerLife} life points`
+    let text = document.getElementById("current-wave").innerText = `Wave number ${currentWave}`
+    let text2 = document.getElementById("left-enemies").innerText = `${enemiesLeft} enemies left to complete wave`
 }
 
 function generateEnemies(){
     if(currentWave === 1){
-        maxSpeedVirus = .4
-        minSpeedVirus= .3
-        gameSpeed = 350
-    }else if (currentWave === 2){
-        maxSpeedVirus = .6
-        minSpeedVirus= .4
-        gameSpeed = 300
-    }else if (currentWave === 3){
         maxSpeedVirus = .8
         minSpeedVirus= .5
-        gameSpeed = 250
-    }else if (currentWave === 4){
+        gameSpeed = 350
+    }else if (currentWave === 2){
         maxSpeedVirus = 1
         minSpeedVirus= .6
+        gameSpeed = 300
+    }else if (currentWave === 3){
+        maxSpeedVirus = 1.2
+        minSpeedVirus= .7
+        gameSpeed = 250
+    }else if (currentWave === 4){
+        maxSpeedVirus = 1.4
+        minSpeedVirus= .8
         gameSpeed = 200
     }else if (currentWave === 5){
-        maxSpeedVirus = 1.1
-        minSpeedVirus= .7
+        maxSpeedVirus = 1.6
+        minSpeedVirus= .9
         gameSpeed = 150
     }
     if (gameTime % gameSpeed === 0){
@@ -223,6 +232,8 @@ function lasersAttack(){
                 firedLasers.splice(laserIndex, 1)
             }if(virus.virusLife <= 0){
                 enemiesArray.splice(virusIndex, 1)
+                killedEnemies++
+                enemiesLeft--
             }
         })
 })}
@@ -238,9 +249,36 @@ function plasmaAttack(){
                 if(phage1.playerLife <= 0 || trespasedVirus > 5){
                     clearInterval(startedGame)
                     ctx.font = "40px Arial"
-                    ctx.fillText(` GAME OVER`, 100, 100)
+                    ctx.fillStyle = "white"
+                    ctx.fillText(` GAME OVER`, 700, 400)
+                }else if(currentWave >= 6){
+                    clearInterval(startedGame)
+                    ctx.font = "40px Arial"
+                    ctx.fillStyle = "white"
+                    ctx.fillText(` CONGRATULATIONS! EARTH IS SAFE...FOR NOW`, 700, 400)
                 }
             }
+
+            function winGame(){
+                if(killedEnemies >= 5){
+                    clearedLevel = true
+                }
+            }
+            
+            function levelUp(){
+             if (clearedLevel === true){
+                currentWave++
+                enemiesLeft = 20
+                clearedLevel = false
+                killedEnemies = 0 
+                phage1.playerLife + 2
+             }
+             console.log(currentWave)
+        }
+
+        function restartGame(){
+            location.reload()
+        }
 
 //event listeners
 
@@ -258,6 +296,8 @@ window.onload = function() {
         case 68:
             phage1.phageMoveRigth()
             break;
+            case 13:
+                restartGame()
         }
         });
 
@@ -266,3 +306,9 @@ window.onload = function() {
                 laserFire()
         }
         });
+
+        //HTML Input
+
+       
+
+        

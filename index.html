@@ -10,9 +10,26 @@
 </head>
 <body>
     <div class="mainScreen">
+        <section class="main-info" >
         <h1>PHAGE FIGHTER</h1>
         <button id="start-button">Start Game</button>
+        <div class="instructions">
+            <ul>
+            <li>Press "D" to move RIGTH </li>
+            <li>Press "A" to move LEFT </li>
+            <li>Press "SPACE BAR" to SHOOT </li>
+            <li>Press "ENTER"  to RESTART GAME </li>
+        </ul>
+        </div>
+        <section class="game-input">
+    <p id="current-wave"></p>
+    <p id="left-enemies"></p>
+    <p id="life"></p>
+        </section>
+    </section>
+    <section class="canvas-element" >
         <canvas id="my-canvas" width="1400" height="800"></canvas>
+    </section>
     </div>
     <script type="text/javascript" src="main.js"></script>
 </body>
