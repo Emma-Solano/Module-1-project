@@ -8,6 +8,12 @@ let images = {
     laser: "Images/laser.png"
 }
 
+let sounds = {
+    laser: "Images/laser.mp3",
+    plasma: "Images/plasma.mp3",
+    explosion: "Images/explosion.mp3"
+}
+
 let startedGame
 let gameTime = 0
 let currentWave = 1
@@ -17,7 +23,7 @@ let firedPlasma = []
 let randomVirusFire
 let trespasedVirus = 0
 let killedEnemies = 0
-let enemiesLeft = 20
+let enemiesLeft = 10
 let clearedLevel = false
 
 
@@ -150,32 +156,32 @@ function refresh(){
     gameOver()
     winGame()
     levelUp()
-    let text3 = document.getElementById("life").innerText = `${phage1.playerLife} life points`
     let text = document.getElementById("current-wave").innerText = `Wave number ${currentWave}`
     let text2 = document.getElementById("left-enemies").innerText = `${enemiesLeft} enemies left to complete wave`
+    let text3 = document.getElementById("life").innerText = `${phage1.playerLife} life points`
 }
 
 function generateEnemies(){
     if(currentWave === 1){
         maxSpeedVirus = .8
         minSpeedVirus= .5
-        gameSpeed = 350
+        gameSpeed = 300
     }else if (currentWave === 2){
         maxSpeedVirus = 1
         minSpeedVirus= .6
-        gameSpeed = 300
+        gameSpeed = 250
     }else if (currentWave === 3){
         maxSpeedVirus = 1.2
         minSpeedVirus= .7
-        gameSpeed = 250
+        gameSpeed = 200
     }else if (currentWave === 4){
         maxSpeedVirus = 1.4
         minSpeedVirus= .8
-        gameSpeed = 200
+        gameSpeed = 150
     }else if (currentWave === 5){
         maxSpeedVirus = 1.6
         minSpeedVirus= .9
-        gameSpeed = 150
+        gameSpeed = 100
     }
     if (gameTime % gameSpeed === 0){
         let randomSpeed = Math.random() * (maxSpeedVirus - minSpeedVirus) + minSpeedVirus
@@ -191,8 +197,11 @@ function generateEnemies(){
     function generatePlasma(randomVirusFire){
         if (gameTime % 200 === 0){
             firedPlasma.push(new Plasma(enemiesArray[randomVirusFire].virusXPosition + 35, enemiesArray[randomVirusFire].virusYPosition +80))
+            plasmaSound()
             firedPlasma.push(new Plasma(enemiesArray[randomVirusFire + 1].virusXPosition + 35, enemiesArray[randomVirusFire + 1].virusYPosition +80))
+            plasmaSound()
             firedPlasma.push(new Plasma(enemiesArray[randomVirusFire + 1].virusXPosition + 35, enemiesArray[randomVirusFire + 1 ].virusYPosition +80))
+            plasmaSound()
         }
     }
 
@@ -231,6 +240,7 @@ function lasersAttack(){
                 virus.virusLife--
                 firedLasers.splice(laserIndex, 1)
             }if(virus.virusLife <= 0){
+                explosionSound()
                 enemiesArray.splice(virusIndex, 1)
                 killedEnemies++
                 enemiesLeft--
@@ -249,18 +259,18 @@ function plasmaAttack(){
                 if(phage1.playerLife <= 0 || trespasedVirus > 5){
                     clearInterval(startedGame)
                     ctx.font = "40px Arial"
-                    ctx.fillStyle = "white"
-                    ctx.fillText(` GAME OVER`, 700, 400)
+                    ctx.fillStyle = "red"
+                    ctx.fillText(` GAME OVER`, 570, 380)
                 }else if(currentWave >= 6){
                     clearInterval(startedGame)
                     ctx.font = "40px Arial"
                     ctx.fillStyle = "white"
-                    ctx.fillText(` CONGRATULATIONS! EARTH IS SAFE...FOR NOW`, 700, 400)
+                    ctx.fillText(` CONGRATULATIONS EARTH IS SAFE...FOR NOW`, 230, 380)
                 }
             }
 
             function winGame(){
-                if(killedEnemies >= 5){
+                if(killedEnemies >= 10){
                     clearedLevel = true
                 }
             }
@@ -268,16 +278,32 @@ function plasmaAttack(){
             function levelUp(){
              if (clearedLevel === true){
                 currentWave++
-                enemiesLeft = 20
+                enemiesLeft = 10
                 clearedLevel = false
                 killedEnemies = 0 
-                phage1.playerLife + 2
+                phage1.playerLife = phage1.playerLife + 2
              }
              console.log(currentWave)
         }
 
         function restartGame(){
             location.reload()
+        }
+
+        function laserSound(){
+            let laserAudio = new Audio(sounds.laser)
+            return laserAudio.play()
+        }
+
+        function plasmaSound(){
+            let plasmaAudio = new Audio(sounds.plasma)
+            return plasmaAudio.play()
+        }
+
+        function explosionSound(){
+            let explosionSound = new Audio(sounds.explosion)
+            explosionSound.volume = 1
+            return explosionSound.play()
         }
 
 //event listeners
@@ -304,6 +330,7 @@ window.onload = function() {
      document.addEventListener('keyup', ({keyCode} ) => {
          if (keyCode === 32){
                 laserFire()
+                laserSound()
         }
         });
 

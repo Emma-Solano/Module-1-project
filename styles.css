@@ -28,12 +28,24 @@ body{
 
 .instructions{
     color: #9500ff;
+    font-size: 12px;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.instructions ul{
+    margin-bottom: 40px;
 }
 
 .instructions ul li{
     font-size: 14px;
     font-family: 'Press Start 2P', cursive;
     padding-top: 15px;
+}
+
+.instructions p{
+    color: white;
+    font-size: 18px;
+    font-family: 'Press Start 2P', cursive;
 }
 
 #start-button{
