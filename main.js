@@ -5,13 +5,17 @@ let images = {
     phage: "Images/phage.png",
     virus: "Images/virus.png",
     plasma: "Images/plasma.png",
-    laser: "Images/laser.png"
+    laser: "Images/laser.png",
+    hearth: "Images/hearth.png"
 }
 
 let sounds = {
     laser: "Images/laser.mp3",
     plasma: "Images/plasma.mp3",
-    explosion: "Images/explosion.mp3"
+    explosion: "Images/explosion.mp3",
+    warning: "Images/warning.mp3",
+    celebration: "Images/celebration.mp3",
+    gameOver: "Images/gameOver.mp3"
 }
 
 let startedGame
@@ -25,8 +29,8 @@ let trespasedVirus = 0
 let killedEnemies = 0
 let enemiesLeft = 10
 let clearedLevel = false
-
-
+// let lifePoints = phage1.playerLife
+let hearthsArray = []
  
 
 //clases
@@ -130,6 +134,22 @@ class Plasma {
     }
 }
 
+class Hearth{
+    constructor(yPosition){
+        this.xPosition = canvas.width - 50
+        this.yPosition = yPosition
+        this.width = 50
+        this.height = 50
+        this.hearth = new Image()
+        this.hearth.src = images.hearth
+        this.hearth.onload = ()=> {
+        }
+    }
+    hearthDraw(){
+        ctx.drawImage(this.hearth, this.xPosition, this.yPosition, this.width, this.height)
+    }
+}
+
 //instancias
 
 let phage1 = new Player()
@@ -209,6 +229,12 @@ function generateEnemies(){
         firedPlasma.forEach((plasmaBall)=>plasmaBall.plasmaDraw())
     }
 
+    // function generateHearths(){
+    //     for (let i = 0; i <= lifePoints; i++){
+
+    //     }
+    // }
+
 
 //auxiliar functions
 
@@ -252,16 +278,19 @@ function plasmaAttack(){
     firedPlasma.forEach((plasma, plasmaIndex) => {
             if(phage1.isTouching(plasma)){
                 phage1.playerLife--
+                warningSound()
              firedPlasma.splice(plasmaIndex, 1)
             }})}
 
             function gameOver(){
                 if(phage1.playerLife <= 0 || trespasedVirus > 5){
+                    gameOverSound()
                     clearInterval(startedGame)
                     ctx.font = "40px Arial"
                     ctx.fillStyle = "red"
                     ctx.fillText(` GAME OVER`, 570, 380)
                 }else if(currentWave >= 6){
+                    celebrationSound()
                     clearInterval(startedGame)
                     ctx.font = "40px Arial"
                     ctx.fillStyle = "white"
@@ -292,11 +321,13 @@ function plasmaAttack(){
 
         function laserSound(){
             let laserAudio = new Audio(sounds.laser)
+            laserAudio.volume = .4
             return laserAudio.play()
         }
 
         function plasmaSound(){
             let plasmaAudio = new Audio(sounds.plasma)
+            plasmaAudio.volume = .4
             return plasmaAudio.play()
         }
 
@@ -304,6 +335,24 @@ function plasmaAttack(){
             let explosionSound = new Audio(sounds.explosion)
             explosionSound.volume = 1
             return explosionSound.play()
+        }
+
+        function warningSound(){
+            let warningAlarm = new Audio(sounds.warning)
+            warningAlarm.volume = 1
+            return warningAlarm.play()
+        }
+
+        function celebrationSound(){
+            let celebration = new Audio(sounds.celebration)
+            celebration.volume = 1
+            return celebration.play()
+        }
+
+        function gameOverSound(){
+            let gameOverSound = new Audio(sounds.gameOver)
+            gameOverSound.volume = 1
+            return gameOverSound.play()
         }
 
 //event listeners
