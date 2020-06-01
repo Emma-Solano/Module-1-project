@@ -8,7 +8,7 @@ Videogame project site
 # Instructions 📑
 
 - The concept of the game is very simple, you have to shoot down all the enemies that descend from the top of the screen.
-- You don't hae to let pass more than 5 enemies to the bottom of the screen in each level.
+- You don't have to let pass more than 5 enemies to the bottom of the screen in each level.
 - You will receive 3 additional life points in each level.
 - You must resist 5 waves (levels) to complete the game.
 - All the controls are detailed in the left side of the screen, once you start the game.
