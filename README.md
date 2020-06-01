@@ -1,11 +1,11 @@
 # Module-1-project
 Videogame project site
 
-##Phage Figter browser mini-game 👾
+#Phage Figter browser mini-game 👾
 - This is my project that belongs to Module 1, I used POO JavaScript, HTML5 and CSS to develope.
 
 ---
-##Instructions 📑
+#Instructions 📑
 
 - The concept of the game is very simple, you have to shoot down all the enemies that descend from the top of the screen.
 - You don't hae to let pass more than 5 enemies to the bottom of the screen in each level.
